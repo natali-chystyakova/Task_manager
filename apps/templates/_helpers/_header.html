@@ -2,54 +2,62 @@
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a href="{% url "root:index"  %}">
-        <img class="logo" src="{% static "/logo/logo.svg" %}" alt="site-logo"/>
-    </a>
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'admin:index' %}">Admin panel</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url "root:index" %}"> Home </a>
-            </li>
-             <li class="nav-item">
-                <a class="nav-link" href="{% url "base:about_us" %}"> About Us </a>
-            </li>
-            {% if user.is_authenticated %}
+        <div class="container-fluid">
+
+            <!-- LOGO -->
+            <a class="navbar-brand" href="{% url 'root:index' %}">
+                <img class="logo" src="{% static 'logo/logo.svg' %}" alt="site-logo"/>
+            </a>
+
+            <!-- LEFT MENU -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user:profile' pk=user.id %}">My profile</a>
+                    <a class="nav-link" href="{% url 'admin:index' %}">Admin panel</a>
                 </li>
-            {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'root:index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'base:about_us' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'task_scheduler:project_list' %}">Task Scheduler</a>
+                </li>
+            </ul>
 
-        </ul>
-    </nav>
-    {% if user.is_authenticated %}
+            <!-- RIGHT USER BLOCK -->
+            <div class="d-flex align-items-center gap-3">
 
-        <li class="last">
-            <p> {{ user.username }} |<a href="{% url "logout" %}"> Logout </a></p>
-            <div class="col my-element-style">
-                <div class="user-avatar">
-                    {% if user.avatar %}
-                        <img src="{{ user.avatar.url }}" alt="Avatar">
-                    {% else %}
+                {% if user.is_authenticated %}
+                    <span>{{ user.username }}</span>
 
-                        <img src="{% static "/images/avatar-placeholder.svg" %}" alt="Avatar">
+                    <div class="user-avatar">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="Avatar">
+                        {% else %}
+                            <img src="{% static 'images/avatar-placeholder.svg' %}" alt="Avatar">
+                        {% endif %}
+                    </div>
 
-                    {% endif %}
+                    <a class="btn btn-outline-secondary btn-sm"
+                       href="{% url 'account_logout' %}">
+                        Logout
+                    </a>
+                {% else %}
+                    <a class="btn btn-outline-primary btn-sm"
+                       href="{% url 'account_login' %}">
+                        Login
+                    </a>
+                    <a class="btn btn-primary btn-sm"
+                       href="{% url 'account_signup' %}">
+                        Sign up
+                    </a>
+                {% endif %}
 
-                </div>
             </div>
 
-        </li>
-
-
-
-    {% else %}
-        <li class="last">
-            <a href="{% url "login" %}"> Login </a>| <a href="{% url "user:signup" %}"> Signup users</a>
-        </li>
-    {% endif %}
-
+        </div>
+    </nav>
 </header>
 
 
