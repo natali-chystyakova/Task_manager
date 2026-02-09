@@ -54,21 +54,31 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "apps.user",
     "apps.base",
+    "apps.task_scheduler",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
+    "django.contrib.sites",  #
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "django_htmx",
 ]
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django_htmx.middleware.HtmxMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 USE_EXTRA_MIDDLEWARES = env.bool("CUSTOM__USE_EXTRA_MIDDLEWARES", False)
@@ -113,8 +123,8 @@ DATABASES = {
         # postgres://user:password@host:port/dbname
         env.str(
             "DJANGO__DB_URL",
-            f'postgres://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'
-            f'@{env.str("POSTGRES_HOST")}:{env.str("POSTGRES_PORT")}/{env.str("POSTGRES_DB")}',
+            f'postgres://{env.str("POSTGRES_USER")}:{env.str("POSTGRES_PASSWORD")}'  # noqa: E231
+            f'@{env.str("POSTGRES_HOST")}:{env.str("POSTGRES_PORT")}/{env.str("POSTGRES_DB")}',  # noqa: E231
         )
     )
 }
@@ -170,3 +180,13 @@ LOGOUT_REDIRECT_URL = "root:index"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # SESSION_SAVE_EVERY_REQUEST = True
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = "username"  # или "email"
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
+LOGIN_URL = "/accounts/login/"
