@@ -22,11 +22,13 @@ from django.urls import path
 from django.urls import include
 
 urlpatterns = [
-    path("accounts/", include("django.contrib.auth.urls")),
+    # path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
     path("user/", include("apps.user.urls")),
     path("about/", include("apps.base.urls")),
+    path("task_scheduler/", include("apps.task_scheduler.urls")),
     path("", include("apps.base.urls_root")),
+    path("accounts/", include("allauth.urls")),
 ]
 
 

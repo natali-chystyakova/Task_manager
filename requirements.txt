@@ -20,10 +20,11 @@ autoflake==2.0.2
 requests==2.28.2
 
 #Core
-django==4.2.0
+Django==5.2
 
 #For images
-Pillow==9.5.0
+#Pillow==9.5.0
+Pillow>=11.0.0
 
 #For forns
 crispy-bootstrap5==0.7
@@ -32,5 +33,12 @@ crispy-bootstrap5==0.7
 django-environ==0.10.0
 
 # For PostgreSQL.
-psycopg2-binary==2.9.6
+#psycopg2-binary==2.9.6
+psycopg[binary]>=3.1
 
+#For authentication, registration, account management
+django-allauth==65.14.1
+
+
+#For using Django with htmx.
+django-htmx==1.27.0

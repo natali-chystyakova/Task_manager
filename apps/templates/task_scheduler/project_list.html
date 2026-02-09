@@ -1,0 +1,61 @@
+
+{% extends "_helpers/_base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- GRID -->
+    <div class="row g-4">
+
+        <!-- PROJECT CARD -->
+        <div class="col-12 col-md-6">
+            <div class="card shadow">
+
+                <div class="card-header bg-danger text-white fw-bold">
+                    For technical
+                </div>
+
+                <div class="card-body">
+
+                    <!-- ADD TASK -->
+                    <div class="input-group mb-3">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Start typing here to create a task…">
+                        <button class="btn btn-success">
+                            Add Task
+                        </button>
+                    </div>
+
+                    <!-- TASK LIST -->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <input class="form-check-input me-2" type="checkbox">
+                            Open this mock-up in Adobe Fireworks
+                        </li>
+                        <li class="list-group-item list-group-item-warning">
+                            <input class="form-check-input me-2" type="checkbox">
+                            Attentively check the file
+                        </li>
+                        <li class="list-group-item">
+                            <input class="form-check-input me-2" type="checkbox">
+                            Write HTML & CSS
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+</div>
+
+    <!-- ADD PROJECT -->
+    <div class="text-center mt-4">
+        <button class="btn btn-primary btn-lg">
+            ➕ Add Project
+        </button>
+    </div>
+
+</div>
+
+{% endblock content %}
