@@ -1,10 +1,12 @@
 from django.db import models
 from datetime import date
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="projects")
 
     def __str__(self):
         return self.name
@@ -25,7 +27,7 @@ class TaskPriority(models.IntegerChoices):
 class Task(models.Model):
     name = models.CharField(max_length=255)
 
-    project_id = models.ForeignKey(
+    project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
         related_name="tasks",
@@ -48,8 +50,11 @@ class Task(models.Model):
         help_text="Optional deadline for the task",
     )
 
-    def mark_done(self):
-        self.status = TaskStatus.DONE
+    def toggle_status(self):
+        if self.status == TaskStatus.DONE:
+            self.status = TaskStatus.TODO
+        else:
+            self.status = TaskStatus.DONE
         self.save()
 
     def clean(self):

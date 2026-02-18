@@ -1,0 +1,8 @@
+<div id="project-form-container" class="text-center mt-4">
+    <button hx-get="{% url 'task_scheduler:project_create' %}"
+            hx-target="#project-form-container"
+            hx-swap="outerHTML"
+            class="btn btn-primary btn-lg">
+        ➕ Add Project
+    </button>
+</div>

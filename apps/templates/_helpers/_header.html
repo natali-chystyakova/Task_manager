@@ -31,13 +31,23 @@
                 {% if user.is_authenticated %}
                     <span>{{ user.username }}</span>
 
-                    <div class="user-avatar">
-                        {% if user.avatar %}
-                            <img src="{{ user.avatar.url }}" alt="Avatar">
-                        {% else %}
-                            <img src="{% static 'images/avatar-placeholder.svg' %}" alt="Avatar">
-                        {% endif %}
-                    </div>
+                     <div class="user-avatar d-inline-block ms-2">
+        {% if user.avatar %}
+            <img src="{{ user.avatar.url }}"
+                 alt="Avatar"
+                 class="rounded-circle"
+                 width="40"
+                 height="40"
+                 style="object-fit: cover;">
+        {% else %}
+            <img src="{% static 'images/avatar-placeholder.svg' %}"
+                 alt="Avatar"
+                 class="rounded-circle"
+                 width="40"
+                 height="40"
+                 style="object-fit: cover;">
+        {% endif %}
+    </div>
 
                     <a class="btn btn-outline-secondary btn-sm"
                        href="{% url 'account_logout' %}">
