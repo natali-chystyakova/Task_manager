@@ -7,6 +7,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
+        "owner",
     )
 
 
@@ -19,5 +20,5 @@ class TaskAdmin(admin.ModelAdmin):
         "status",
         "priority",
         "deadline",
-        "mark_done",
+        "toggle_status",
     )
