@@ -1,0 +1,21 @@
+
+
+<div id="project-form-container"> <div class="card p-3 shadow-sm mb-4">
+        <form hx-post="{% url 'task_scheduler:project_create' %}"
+              hx-target="#project-list"
+              hx-swap="beforeend">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="submit" class="btn btn-success">Save Project</button>
+
+            <button type="button"
+                    class="btn btn-secondary"
+                    hx-get="{% url 'task_scheduler:render_add_button' %}"
+                    hx-target="#project-form-container"
+                    hx-swap="outerHTML">
+                Cancel
+            </button>
+        </form>
+    </div>
+</div>
