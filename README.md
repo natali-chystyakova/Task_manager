@@ -1,11 +1,10 @@
-**Task Manager**
+# :calendar: Task Manager
 ---
 ##  Description 
 Task Manager is a simple and intuitive web application for managing projects and tasks.
 It is designed for people who want to increase productivity, stay organized, and clearly control their workflow.
 
-The application allows users to create projects, manage tasks inside them, set priorities, assign deadlines, and track completion status — all in a clean and responsive interface.
----
+#### The application allows users to create projects, manage tasks inside them, set priorities, assign deadlines, and track completion status — all in a clean and responsive interface.
 
 ## :arrow_forward: Functional Requirements 
 * Projects
