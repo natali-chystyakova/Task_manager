@@ -1,0 +1,13 @@
+
+
+{%  block title %}Delete project {%  endblock  %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+
+        <button type="submit" class="btn btn-danger">Confirm</button>
+    </form>
+{% endblock %}
