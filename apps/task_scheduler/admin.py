@@ -20,5 +20,4 @@ class TaskAdmin(admin.ModelAdmin):
         "status",
         "priority",
         "deadline",
-        "toggle_status",
     )
