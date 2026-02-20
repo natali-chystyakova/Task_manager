@@ -1,81 +1,36 @@
-
-
-<li id="task-{{ task.id }}" class="list-group-item">
-
-    <div class="d-flex justify-content-between align-items-center">
-        <div>
-
-            <!-- Toggle статус -->
-<!--            <form-->
-<!--                hx-post="{% url 'task_scheduler:task_toggle_status' task.id %}"-->
-<!--                hx-target="#task-{{ task.id }}"-->
-<!--                hx-swap="outerHTML"-->
-<!--            >-->
-<!--                {% csrf_token %}-->
-<!--                <input class="form-check-input me-2"-->
-<!--                       type="checkbox"-->
-<!--                       onchange="this.form.submit()"-->
-<!--                       {% if task.status == 'done' %}checked{% endif %}>-->
-<!--            </form>-->
-
-<!--            <span class="{% if task.status == 'done' %}text-decoration-line-through text-muted{% endif %}">-->
-<!--                {{ task.name }}-->
-<!--            </span>-->
-
-    <input class="form-check-input me-2"
-           type="checkbox"
-           {% if task.status == 'done' %}checked{% endif %}
-
-           hx-post="{% url 'task_scheduler:task_toggle_status' task.id %}"
-           hx-target="#task-{{ task.id }}"
-           hx-swap="outerHTML"
-           hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-
-    <span class="{% if task.status == 'done' %}text-decoration-line-through text-muted{% endif %}">
-        {{ task.name }}
-    </span>
-
+<div id="task-{{ task.id }}" class="list-group-item task-item border-start-0 border-end-0 py-2">
+    <div class="row align-items-center g-0">
+        <div class="col d-flex align-items-center">
+            <input class="form-check-input me-3 flex-shrink-0" type="checkbox"
+                   {% if task.status == 'done' %}checked{% endif %}
+                   hx-post="{% url 'task_scheduler:task_toggle_status' task.id %}"
+                   hx-target="#task-{{ task.id }}" hx-swap="outerHTML"
+                   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+            
+            <span class="task-text {% if task.status == 'done' %}text-decoration-line-through text-muted{% endif %}">
+                {{ task.name }}
+            </span>
         </div>
 
-        <button class="btn btn-sm btn-light"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapse-{{ task.id }}">
-            ▼
-        </button>
+        <div class="col-auto task-actions d-flex align-items-center gap-2 px-2">
+            <button class="btn-icon text-secondary" data-bs-toggle="collapse" data-bs-target="#collapse-{{ task.id }}">
+                <i class="bi bi-chevron-down"></i>
+            </button>
+            <div class="vr text-light" style="height: 16px;"></div>
+            <button hx-get="{% url 'task_scheduler:task_update' task.id %}"
+                    hx-target="#task-{{ task.id }}" hx-swap="outerHTML"
+                    class="btn-icon text-secondary"><i class="bi bi-pencil"></i></button>
+            <button hx-get="{% url 'task_scheduler:task_delete' task.id %}"
+                    hx-target="#task-{{ task.id }}" hx-swap="outerHTML"
+                    class="btn-icon text-secondary"><i class="bi bi-trash"></i></button>
+        </div>
     </div>
 
     <div class="collapse mt-2" id="collapse-{{ task.id }}">
-        <div class="card card-body">
-
-            {% if task.deadline %}
-                <p><strong>Deadline:</strong> {{ task.deadline|date:"d M Y" }}</p>
-            {% else %}
-                <p><strong>Deadline:</strong> —</p>
-            {% endif %}
-
-            <p><strong>Status:</strong> {{ task.status }}</p>
-            <p><strong>Priority:</strong> {{ task.priority }}</p>
-
-
-            <button
-                hx-get="{% url 'task_scheduler:task_update' task.id %}"
-                hx-target="#task-{{ task.id }}"
-                hx-swap="outerHTML"
-                 class="btn btn-success btn-sm"
-            >
-            Edit
-            </button>
-
-            <button
-                hx-get="{% url 'task_scheduler:task_delete' task.id %}"
-                hx-target="#task-{{ task.id }}"
-                hx-swap="outerHTML"
-                class="btn btn-danger btn-sm"
-            >
-                Delete
-            </button>
-
+        <div class="row g-2 p-2 bg-white rounded border mx-1 small">
+            <div class="col-sm-4"><strong>Deadline:</strong> {{ task.deadline|date:"d M Y"|default:"—" }}</div>
+            <div class="col-sm-4"><strong>Status:</strong> {{ task.status }}</div>
+            <div class="col-sm-4 text-sm-end"><strong>Priority:</strong> {{ task.priority }}</div>
         </div>
     </div>
-
-</li>
+</div>

@@ -57,3 +57,22 @@ height: auto;
 .right {
     margin: 0 0 0 auto;
 }
+
+/* Подсветка желтым при наведении на строку */
+.task-item { transition: 0.2s; border-left: 3px solid transparent; }
+.task-item:hover {
+    background-color: #fffde7 !important;
+    border-left: 3px solid #ffeb3b; /* Маленький акцент слева */
+}
+
+    /* Скрываем кнопки до наведения */
+.project-actions, .task-actions { opacity: 0; transition: opacity 0.2s; }
+.project-card:hover .project-actions,
+.task-item:hover .task-actions { opacity: 1; }
+
+    /* Кнопки-иконки */
+.btn-icon { background: none; border: none; padding: 0 2px; transition: 0.2s; color: inherit; }
+.btn-icon:hover { color: #ffc107 !important; transform: scale(1.1); }
+
+    /* Ваша логика empty-блока */
+.empty-message:not(:only-child) { display: none !important; }

@@ -1,37 +1,27 @@
-
 {% extends "_helpers/_base.html" %}
 {% load static %}
 {% block content %}
 
-<div class="container py-4">
-
-    <!-- GRID -->
-    <div class="row g-4">
-
-
-        <!-- PROJECT CARD -->
-        <ul id="project-list" class="list-unstyled">
+<div class="container py-5">
+    <div id="project-list" class="row justify-content-center g-4">
         {% for project in task_scheduler %}
-             {% include "task_scheduler/partials_pro/project_item.html" %}
-
+            <div class="col-12 col-xl-10"> 
+                 {% include "task_scheduler/partials_pro/project_item.html" %}
+            </div>
         {% endfor %}
-</ul>
-</div>
-
-
-    <!-- ADD PROJECT -->
-    <div id="project-form-container" class="mb-4">
-    <div class="text-center">
-        <button
-            hx-get="{% url 'task_scheduler:project_create' %}"
-            hx-target="#project-form-container"
-            hx-swap="innerHTML"
-            class="btn btn-primary btn-lg">
-            ➕ Add Project
-        </button>
     </div>
-</div>
 
+    <div id="project-form-container" class="row mt-5">
+        <div class="col-12 text-center">
+            <button
+                hx-get="{% url 'task_scheduler:project_create' %}"
+                hx-target="#project-form-container"
+                hx-swap="innerHTML"
+                class="btn btn-primary btn-lg px-5 shadow-sm">
+                <i class="bi bi-plus-circle me-2"></i> Add TODO List
+            </button>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}
