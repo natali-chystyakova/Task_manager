@@ -1,93 +1,53 @@
-<li id="project-{{ project.id }}" class="row my-elements-box">
+<div id="project-{{ project.id }}" class="card project-card shadow-sm border-0" style="border-radius: 10px; overflow: hidden;">
 
-        <div class="col-12 col-md-6">
-            <div class="card shadow">
+    <div class="project-header px-3 py-2 text-white shadow-sm"
+         style="background: linear-gradient(180deg, #5b9bd5 0%, #41719c 100%);">
+        <div class="row align-items-center">
+            <div class="col-8 d-flex align-items-center">
+                <i class="bi bi-calendar3 me-2"></i>
+                <span class="fw-bold fs-5 text-truncate">{{ project.name }}</span>
+            </div>
 
-                <div class="card-header bg-danger text-white
-            d-flex justify-content-between align-items-center">
-
-    <span class="fw-bold">
-        {{ project.name }}
-    </span>
-
-    <div class="d-flex gap-2">
-
-            <a href="{% url 'task_scheduler:project_update' pk=project.id %}"
-            hx-get="{% url 'task_scheduler:project_update' pk=project.id %}"
-            hx-target="#project-{{ project.id }}"
-            hx-swap="outerHTML"
-            class="btn btn-success btn-sm">
-                Edit
-            </a>
-
-
-
-    <a
-        hx-get="{% url 'task_scheduler:project_delete' project.id %}"
-        hx-target="#project-{{ project.id }}"
-        hx-swap="outerHTML"
-        class="btn btn-warning btn-sm">
-            Delete
-    </a>
-    </div>
-
-</div>
-
-
-                <div class="card-body">
-
-
-                    <!-- ADD TASK -->
-
-
-<div id="task-form-{{ project.id }}">
-
-    <form
-        hx-post="{% url 'task_scheduler:task_create' project.id %}"
-        hx-target="#task-list-{{ project.id }}"
-
-        hx-swap="beforeend"
-        hx-on::after-request="if(event.detail.successful){this.reset()}"
-        class="mb-3"
-
-    >
-        {% csrf_token %}
-        <div class="input-group mb-3">
-            <input type="text"
-                   name="name"
-                   class="form-control"
-                   placeholder="Start typing here to create a task..."
-                   required>
-
-            <button type="submit" class="btn btn-success">
-                Add Task
-            </button>
-        </div>
-    </form>
-</div>
-
-
-
-
-    <!-- TASK LIST -->
-    <ul class="list-group" id="task-list-{{ project.id }}">
-        {% for task in project.tasks.all %}
-
-            {% include "task_scheduler/tasks/partials/task_item.html" %}
-
-
-
-
-
-        {% empty %}
-            <li class="list-group-item text-muted">
-                No tasks yet
-            </li>
-        {% endfor %}
-    </ul>
-
-                </div>
+            <div class="col-4 text-end project-actions">
+                <button hx-get="{% url 'task_scheduler:project_update' project.id %}"
+                        hx-target="#project-{{ project.id }}" hx-swap="outerHTML"
+                        class="btn-icon text-white"><i class="bi bi-pencil-square"></i></button>
+                <button hx-get="{% url 'task_scheduler:project_delete' project.id %}"
+                        hx-target="#project-{{ project.id }}" hx-swap="outerHTML"
+                        class="btn-icon text-white ps-2"><i class="bi bi-trash3-fill"></i></button>
             </div>
         </div>
+    </div>
 
-</li>
+    <div class="card-body p-0">
+        <div class="bg-light border-bottom p-2">
+            <form hx-post="{% url 'task_scheduler:task_create' project.id %}"
+                  hx-target="#task-list-{{ project.id }}" hx-swap="beforeend"
+                  hx-on::after-request="if(event.detail.successful){this.reset()}">
+                {% csrf_token %}
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <i class="bi bi-plus-square-fill text-success fs-3"></i>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="name" class="form-control border-0 bg-transparent shadow-none"
+                               placeholder="Start typing here to create a task..." required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success btn-sm">Add Task</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="task-list-{{ project.id }}" class="list-group list-group-flush">
+            {% for task in project.tasks.all %}
+                {% include "task_scheduler/tasks/partials/task_item.html" %}
+            {% empty %}
+                <div class="list-group-item text-muted empty-message py-4 text-center">
+                    No tasks yet
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
