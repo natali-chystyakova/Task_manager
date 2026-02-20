@@ -39,35 +39,33 @@ def project_create(request):
         form = ProjectForm(request.POST, request.FILES)
         if form.is_valid():
             project = form.save(commit=False)
-            # 2. Назначаем владельца из паспорта запроса 👤
+
             project.owner = request.user
 
-            # 3. Теперь сохраняем по-настоящему
             project.save()
 
             if request.headers.get("HX-Request"):
-                # 1. Рендерим новый проект
                 project_html = render_to_string(
                     "task_scheduler/partials_pro/project_item.html", {"project": project}, request=request
                 )
-                # 2. Рендерим кнопку "Add Project" (OOB), чтобы она заменила форму
+                # 2. Рендерим кнопку "Add Project" (OOB), щоб вона замнила форму
                 button_html = render_to_string("task_scheduler/partials_pro/add_project_button.html", request=request)
-                # Оборачиваем кнопку в OOB-контейнер
+                # Огортаем кнопку в OOB-контейнер
                 oob_button = f'<div id="project-form-container" hx-swap-oob="true">{button_html}</div>'
 
                 return HttpResponse(project_html + oob_button)
 
             return redirect("task_scheduler:project_list")
 
-        # Если форма НЕВАЛИДНА (ошибки) при POST запросе
+        # якщо форма НЕВАЛIДНА (помилки) в POST запросi
         if request.headers.get("HX-Request"):
             return render(request, "task_scheduler/partials_pro/project_form_inner.html", {"form": form})
 
     else:
-        # GET запрос: создаем пустую форму
+        # GET запрос: робим пустую форму
         form = ProjectForm()
 
-    # Ответ для GET запроса (или обычного, или HTMX открытия формы)
+    # Вiдповiдь для GET запроса (або звичайного, або HTMX вiдкривання формы)
     if request.headers.get("HX-Request"):
         return render(request, "task_scheduler/partials_pro/project_form_inner.html", {"form": form})
 
@@ -82,7 +80,7 @@ def project_update(request, pk):
     if request.method == "POST" and form.is_valid():
         form.save()
         if request.headers.get("HX-Request"):
-            # возвращаем обновлённую карточку проекта
+            # повертаем оновлену карточку проекта
             return render(request, "task_scheduler/partials_pro/project_item.html", {"project": project})
         return redirect("task_scheduler:project_list")
 
@@ -94,7 +92,7 @@ def project_update(request, pk):
 
 @login_required
 def project_delete(request, pk):
-    # Ищем проект ТОЛЬКО среди тех, где owner = request.user 👤
+    # Шукаем проект тiльки серед тех, де owner = request.user 👤
     project = get_object_or_404(Project, pk=pk, owner=request.user)
 
     if request.method == "POST":
@@ -122,18 +120,18 @@ def task_create(request, project_id):
             task.save()
 
             if request.headers.get("HX-Request"):
-                # Рендерим саму задачу (пойдет в конец списка)
+                # Рендерим саму задачу
                 task_html = render_to_string(
                     "task_scheduler/tasks/partials/task_item.html", {"task": task}, request=request
                 )
 
                 return HttpResponse(task_html)
 
-        # Если форма невалидна, возвращаем её с ошибками обратно в тот же контейнер
+        # Если форма невалiдна, вертаем ii с з помилками  в той самий контейнер
         if request.headers.get("HX-Request"):
             return render(request, "task_scheduler/tasks/partials/task_form.html", {"form": form, "project": project})
 
-    # Обработка GET: когда пользователь нажал на кнопку "+ Add Task"
+    # Обработка GET: коли користувач нажав на кнопку "+ Add Task"
     if request.method == "GET" and request.headers.get("HX-Request"):
         return render(request, "task_scheduler/tasks/partials/task_form.html", {"project": project, "form": TaskForm()})
 
@@ -147,7 +145,7 @@ def task_update(request, pk):
     if request.method == "POST" and form.is_valid():
         form.save()
 
-        # 🔥 если HTMX — вернуть обновлённый task_item
+        # якщо HTMX — вернути оновленный task_item
         if request.headers.get("HX-Request"):
             return render(
                 request,
@@ -157,7 +155,7 @@ def task_update(request, pk):
 
         return redirect("task_scheduler:project_list")
 
-    # если GET через HTMX — вернуть форму как partial
+    # якщо GET через HTMX — вернути форму як partial
     if request.headers.get("HX-Request"):
         return render(
             request,
@@ -200,13 +198,13 @@ def task_delete(request, pk):
 def task_toggle_status(request, pk):
     task = get_object_or_404(Task, pk=pk)
 
-    # Используем метод модели
+    # фикористовуэм метод модели
     task.toggle_status()
 
     if request.headers.get("HX-Request"):
         return render(request, "task_scheduler/tasks/partials/task_item.html", {"task": task})
 
-    # Резервный вариант для обычных запросов
+    # Резервний вариант для звичайних запросiв
     return redirect("task_scheduler:project_list")
 
 
